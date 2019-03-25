@@ -1,2 +1,13 @@
-\section{Perintah Navigasi}
-Perintah navigasi direktori
+\section{CodeIgniter 4 pre alpha bukan CodeIgniter 3}
+Semenjak BCIT mengambil CodeIgniter di bawah perlindungannya, mereka mencoba bergerak maju untuk memperbaiki beberapa permasalahan yang ada pada sebelumnya. CodeIgniter versi 3 dapat dikatakan sangat kompatibel dengan versi 2. Bahkan dengan mengubah modal di sana-sini Kita dapat memigrasi aplikasi dalam "jiffy". Pada saat ini CodeIgniter 4 telah dibuka untuk umum dalam versi pra-alfa akan tetapi mengenai source code tidak begitu lengkap dan bahkan perkembangannya cukup lama. 
+\par
+Hal pertama yang saya perhatikan adalah ada beberapa perubahan pada CodeIgniter sebelumnya. ini tidak terlihat seperti CodeIgniter seperti yang kita gunakan juga. BCIT memutuskan untuk membersihkan beberapa fungsi yang tidak begitu penting untuk membangun kembali sebuah framework yang lebih simple dan cepat di mengerti pada kalangan programmer. untuk pendokumentasinya dan juga perawatannya dilakukan perkembangan itu sendiri, butuh beberapa saat untuk mencari tahu bagaimana semuanya cocok pada Framework yang disebut CodeIgniter 4, yang hanya akan berjalan mulai dengan PHP versi 7. Jadi pertama-tama cari tahu apakah penyedia host Kita mendukung atau jika sudah diinstal dan berjalan di server lokal Kita sendiri. CodeIgniter 4 TIDAK kompatibel dengan CodeIgniter 3.
+\par
+Semuanya sekarang berhubungan dengan ruang nama. Tidak ada lagi $ this-> load-> model ('sesuatu')$  tetapi Kita harus terbiasa dengan "penggunaan" dan kembali memangkas referensi ruang nama.
+
+\section{apa yang masih ada? dan apa yang telah berubah?}
+Dalam ulasan kecil dan tidak lengkap ini, saya tidak akan berbicara tentang "pandangan", karena saya belum sampai sejauh itu dan saya menggunakan CodeIgniter terutama sebagai server REST ke aplikasi berbasis Ext JS. Saya akan berbicara tentang "pandangan" setelah benar-bener CodeIgniter 4 di rilis dan bias di publikasikan sepenuhnya.
+CodeIgniter masih merupakan kerangka kerja MVC (model-view-controller) dan tim pengembangan sangat jelas tentang HMVC (hierarki-model-tampilan-controller), itu tidak akan diimplementasikan. HMVC itu sendiri merupakan kumpulan triad MVC tradisional yang beroperasi sebagai satu aplikasi. Setiap triad sepenuhnya independen dan dapat dieksekusi tanpa kehadiran yang lain.
+\par
+Apa yang akan Kita perhatikan adalah struktur jalur yang berbeda. Kita sekarang akan menemukan jalur "aplikasi", "sistem" dan "publik". Itu perlu penjelasan. Gagasan di balik semua ini adalah bahwa jalur "publik" harus menjadi jalur root dari aplikasi web Kita. Ini berarti bahwa "sistem" dan "aplikasi" akan disembunyikan dari mata publik. Ini meningkatkan keamanan. Juga di belakang mata publik adalah folder "dapat ditulis", yang memiliki akses tulis, tetapi tidak dapat diakses langsung oleh URL.
+
