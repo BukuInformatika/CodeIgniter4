@@ -11,3 +11,14 @@ CodeIgniter masih merupakan kerangka kerja MVC (model-view-controller) dan tim p
 \par
 Apa yang akan Kita perhatikan adalah struktur jalur yang berbeda. Kita sekarang akan menemukan jalur "aplikasi", "sistem" dan "publik". Itu perlu penjelasan. Gagasan di balik semua ini adalah bahwa jalur "publik" harus menjadi jalur root dari aplikasi web Kita. Ini berarti bahwa "sistem" dan "aplikasi" akan disembunyikan dari mata publik. Ini meningkatkan keamanan. Juga di belakang mata publik adalah folder "dapat ditulis", yang memiliki akses tulis, tetapi tidak dapat diakses langsung oleh URL.
 
+\subsection{Tidak ada perbedaan dalam memuat objek}
+CodeIgniter melakukan pemuatan Model, Perpustakaan, dan objek lainnya dengan cara yang sama. Memuat Model atau Pustaka secara otomatis, serta objek lain, dapat diatur di dalam "Autoload.php" di folder "config". Di sana Kita memiliki array $ psr4 dan array $ classmap , yang dapat digunakan untuk memuat suatu objek secara otomatis. Tidak ada perbedaan antara kelas ketika datang ke pemuatan otomatis. Kita harus memberi tahu apa namespace itu dan di mana ia dapat ditemukan.
+$classmap = [
+   'TMDB_API' => APPPATH . 'ThirdParty/tmdb-v3.php'
+];$
+Sampel tersebut menunjukkan bagaimana namespace dibuat untuk objek non-CodeIgniter di folder "ThirdParty" di dalam folder "application".
+
+\subsection{Memuat Model dan Perpustakaan dalam pengontrol}
+Kutipan di bawah ini  menunjukkan bagaimana Kita memuat model dan pustaka di controller.
+Sampel memiliki kelas model bernama "TmdbModel" dan kelas perpustakaan bernama "Tmdb". Perhatikan deklarasi "gunakan". Kita harus terbiasa dengan itu (saya lakukan), tetapi Kita akan terbiasa dengan cepat. Saya harus mendeklarasikan antarmuka "CodeIgniter \ HTTP \" karena saya mendapatkan kesalahan pada konstruk induk ketika saya tidak menambahkan variabel $ request dan $ response . Meninggalkan parameter tidak berfungsi.
+
