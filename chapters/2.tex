@@ -1,13 +1,160 @@
 \section{CodeIgniter 4 pre alpha bukan CodeIgniter 3}
-Semenjak BCIT mengambil CodeIgniter di bawah perlindungannya, mereka mencoba bergerak maju untuk memperbaiki beberapa permasalahan yang ada pada sebelumnya. CodeIgniter versi 3 dapat dikatakan sangat kompatibel dengan versi 2. Bahkan dengan mengubah modal di sana-sini Kita dapat memigrasi aplikasi dalam "jiffy". Pada saat ini CodeIgniter 4 telah dibuka untuk umum dalam versi pra-alfa akan tetapi mengenai source code tidak begitu lengkap dan bahkan perkembangannya cukup lama. 
+Semenjak BCIT mengambil CodeIgniter di bawah perlindungannya, mereka mencoba bergerak maju untuk memperbaiki beberapa permasalahan yang ada pada sebelumnya. CodeIgniter versi 3 dapat dikatakan sangat kompatibel dengan versi 2. Bahkan dengan mengubah modal di sana-sini Kita dapat memigrasi aplikasi dalam "jiffy". Pada saat ini CodeIgniter 4 telah dibuka untuk umum dalam versi pra-alfa akan tetapi mengenai \textit{Source Code } tidak begitu lengkap dan bahkan perkembangannya cukup lama. 
 \par
 Hal pertama yang saya perhatikan adalah ada beberapa perubahan pada CodeIgniter sebelumnya. ini tidak terlihat seperti CodeIgniter seperti yang kita gunakan juga. BCIT memutuskan untuk membersihkan beberapa fungsi yang tidak begitu penting untuk membangun kembali sebuah framework yang lebih simple dan cepat di mengerti pada kalangan programmer. untuk pendokumentasinya dan juga perawatannya dilakukan perkembangan itu sendiri, butuh beberapa saat untuk mencari tahu bagaimana semuanya cocok pada Framework yang disebut CodeIgniter 4, yang hanya akan berjalan mulai dengan PHP versi 7. Jadi pertama-tama cari tahu apakah penyedia host Kita mendukung atau jika sudah diinstal dan berjalan di server lokal Kita sendiri. CodeIgniter 4 TIDAK kompatibel dengan CodeIgniter 3.
 \par
-Semuanya sekarang berhubungan dengan ruang nama. Tidak ada lagi $ this-> load-> model ('sesuatu')$  tetapi Kita harus terbiasa dengan "penggunaan" dan kembali memangkas referensi ruang nama.
+Semuanya sekarang berhubungan dengan ruang nama. Tidak ada lagi $ this-> load-> model (sesuatu)$  tetapi Kita harus terbiasa dengan penggunaan dan kembali memangkas referensi ruang nama.
 
 \section{apa yang masih ada? dan apa yang telah berubah?}
-Dalam ulasan kecil dan tidak lengkap ini, saya tidak akan berbicara tentang "pandangan", karena saya belum sampai sejauh itu dan saya menggunakan CodeIgniter terutama sebagai server REST ke aplikasi berbasis Ext JS. Saya akan berbicara tentang "pandangan" setelah benar-bener CodeIgniter 4 di rilis dan bias di publikasikan sepenuhnya.
-CodeIgniter masih merupakan kerangka kerja MVC (model-view-controller) dan tim pengembangan sangat jelas tentang HMVC (hierarki-model-tampilan-controller), itu tidak akan diimplementasikan. HMVC itu sendiri merupakan kumpulan triad MVC tradisional yang beroperasi sebagai satu aplikasi. Setiap triad sepenuhnya independen dan dapat dieksekusi tanpa kehadiran yang lain.
+Dalam ulasan kecil dan tidak lengkap ini, saya tidak akan berbicara tentang pandangan, karena saya belum sampai sejauh itu dan saya menggunakan CodeIgniter terutama sebagai server REST ke aplikasi berbasis Ext JS. Saya akan berbicara tentang pandangan setelah benar-bener CodeIgniter 4 di rilis dan bias di publikasikan sepenuhnya.
+CodeIgniter masih merupakan kerangka kerja MVC \textit{model-view-controller} dan tim pengembangan sangat jelas tentang HMVC \textit{(hierarki-model-tampilan-controller}, itu tidak akan diimplementasikan. HMVC itu sendiri merupakan kumpulan triad MVC tradisional yang beroperasi sebagai satu aplikasi. Setiap triad sepenuhnya independen dan dapat dieksekusi tanpa kehadiran yang lain.
 \par
-Apa yang akan Kita perhatikan adalah struktur jalur yang berbeda. Kita sekarang akan menemukan jalur "aplikasi", "sistem" dan "publik". Itu perlu penjelasan. Gagasan di balik semua ini adalah bahwa jalur "publik" harus menjadi jalur root dari aplikasi web Kita. Ini berarti bahwa "sistem" dan "aplikasi" akan disembunyikan dari mata publik. Ini meningkatkan keamanan. Juga di belakang mata publik adalah folder "dapat ditulis", yang memiliki akses tulis, tetapi tidak dapat diakses langsung oleh URL.
+Apa yang akan Kita perhatikan adalah struktur jalur yang berbeda. Kita sekarang akan menemukan jalur aplikasi, sistem dan publik. Itu perlu penjelasan. Gagasan di balik semua ini adalah bahwa jalur publik harus menjadi jalur root dari aplikasi web Kita. Ini berarti bahwa sistem dan aplikasi akan disembunyikan dari mata publik. Ini meningkatkan keamanan. Juga di belakang mata publik adalah folder dapat ditulis, yang memiliki akses tulis, tetapi tidak dapat diakses langsung oleh URL.
+
+\subsection{Tidak ada perbedaan dalam memuat objek}
+CodeIgniter melakukan pemuatan Model, Perpustakaan, dan objek lainnya dengan cara yang sama. Memuat Model atau Pustaka secara otomatis, serta objek lain, dapat diatur di dalam \textit{"Autoload.php"} di folder  \textit{"config"}. Di sana Kita memiliki \textit{array psr4} dan \textit{array classmap}, yang dapat digunakan untuk memuat suatu objek secara otomatis. Tidak ada perbedaan antara kelas ketika datang ke pemuatan otomatis. Kita harus memberi tahu apa namespace itu dan di mana ia dapat ditemukan.
+
+\begin{verbatim}
+    classmap = [
+   'TMDB_API' => APPPATH . 'ThirdParty/tmdb-v3.php'
+];
+\end{verbatim}
+
+Sampel tersebut menunjukkan bagaimana \textit{namespace} dibuat untuk objek non-CodeIgniter di folder \textit{"ThirdParty"}  di dalam folder \textit{"application"}.
+
+\subsection{Memuat Model dan Perpustakaan dalam pengontrol}
+Kutipan di bawah ini  menunjukkan bagaimana Kita memuat model dan pustaka di controller.
+Sampel memiliki kelas model bernama \textit{"TmdbModel"} dan kelas perpustakaan bernama \textit{"Tmdb"}. Perhatikan deklarasi gunakan. Kita harus terbiasa dengan itu (saya lakukan), tetapi Kita akan terbiasa dengan cepat. Saya harus mendeklarasikan antarmuka CodeIgniter HTTP karena saya mendapatkan kesalahan pada konstruk induk ketika saya tidak menambahkan variabel \textit{"request"}  dan \textit{"response"}. Meninggalkan parameter tidak berfungsi.
+
+\begin{verbatim}
+    <?php
+namespace App\Controllers;
+ 
+use App\Models\TmdbModel;
+use App\Libraries\Tmdb;
+ 
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+ 
+class Movies extends \CodeIgniter\Controller
+{
+    protected $tmdbModel;
+    protected $tmdb;
+ 
+    public function __construct(RequestInterface $request,
+    ResponseInterface $response)
+    {
+        parent::__construct($request, $response);
+ 
+        $this->tmdbModel = new TmdbModel();
+        $this->tmdb = new Tmdb();
+ 
+        helper('download');
+ 
+    }
+\end{verbatim}
+
+\par
+Seperti yang kita lihat kelas model dan kelas perpustakaan dinyatakan sebagai objek baru. kita tidak lagi menggunakan $ this-> load-> model $ dan $ this-> load-> library $, yang sebenarnya juga menciptakan objek.
+\par
+Baris kode terakhir dalam contoh di atas adalah \textit{helper} atau unduh. Ini adalah cara memuat pembantu. Di sini saya memiliki pembantu unduh, yang saya salin dari inti CodeIgniter 3 ke dalam folder pembantu aplikasi saya. Dalam versi final, saya berharap banyak pembantu inti dari versi 3 akan menjadi bagian dari inti versi 4.
+
+\subsection{Basis data dan input}
+Kelas basis data telah dimodifikasi. Beberapa fungsi hilang dan beberapa kini memiliki metode yang berbeda (tapi mungkin belum semuanya diimplementasikan).
+
+\begin{verbatim}
+$query->num_rows() dirubah menjadi:
+    count($query->getResult())
+
+$query->firstRow() dirubah menjadi:
+    $row = $query->getRow(0);
+
+$query->result() dirubah menjadi:
+    $query->getResult()
+
+$this->db->insert(‘table’, $record) dirubah menjadi:
+    $this->db->table('table')->insert($record);
+
+Kelas input digantikan oleh kelas permintaan, ini artinya:
+    $search = $this->input->post('search');
+dirubah menjadi:
+    $search = $this->request->getPost('search');
+\end{verbatim}
+
+\subsection{Perpustakaan sebagai antarmuka untuk kelas CodeIgniter tidak ada}
+Saya sering menggunakan kelas pustaka sebagai antarmuka ke paket atau kelas pihak ketiga seperti TCPDF (pembuatan PDF) atau PHPExcel (pembuatan Excel). Saya meletakkan konten paket pihak ketiga kedalam folder pihak ketiga (seperti sekarang \textit{"ThirdParty"} dan membuat kelas perpustakaan CodeIgniter yang memperluas kelas utama pihak ketiga. Dalam aplikasi TMDB saya, saya juga memiliki sesuatu seperti itu. Saya memiliki perpustakaan bernama Tmdb dan di folder \textit{"ThirdParty"}, saya memiliki skrip PHP \textit{"tmdb-v3.php"} yang tidak ada hubungannya dengan CodeIgniter dan berisi kelas dengan panggilan API TMDB. Sampel di bawah ini menunjukkan bagaimana saya melakukannya di CodeIgniter 4. Dalam folder \textit{Libraries}: Tmdb.php
+
+\begin{verbatim}
+    <?php
+namespace App\Libraries;
+use TMDB_API; // relates to the Autoload.php config
+ 
+class Tmdb extends TMDB_API {
+    private $API_Key = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    private $defaultFormat = self::JSON;
+    private $defaultLang = 'en';
+ 
+    function __construct() {
+        parent::__construct(
+                $this->API_Key, 
+                $this->defaultFormat, 
+                $this->defaultLang
+        );
+    }
+}
+\end{verbatim}
+
+Referensi TMDB\_API di \textit{Autoload.php} di folder \textit{"config"}. 
+
+\begin{verbatim}
+    public function __construct()
+    {
+        parent::__construct();
+         ....
+         $classmap = [
+            'TMDB_API' => APPPATH . 'ThirdParty/tmdb-v3.php'
+        ];
+         ....
+    }
+    ...
+}
+\end{verbatim}
+
+Penggunaan dalam model (TmdbModel.php)
+
+\begin{verbatim}
+<?php
+namespace App\Models;
+use App\Libraries\Tmdb;  // Library Tmdb
+class TmdbModel extends \CodeIgniter\Model
+{
+    protected $tmdb; // Library Tmdb goes here
+ 
+    function __construct()
+    {
+        parent::__construct();
+ 
+        $this->tmdb = new Tmdb(); // declare Tmdb as a new object
+    }
+ 
+    ...
+ 
+    function getTopRated() {
+        return $this->tmdb->TvTopRated(); // usage of library function
+    }
+     ...
+     function AddBoxoffice($info = array())
+    {
+        $record = array(
+            'id'           => $info['id'],
+            'name'         => $info['name'],
+            'popularity'   => $info['popularity']
+        );
+ 
+        $this->db->table('tmdb_boxoffice')->insert('tmdb_boxoffice', $record);
+    }
+ 
+    ...
+}
+\end{verbatim}
 
